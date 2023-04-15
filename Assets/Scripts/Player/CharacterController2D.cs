@@ -119,8 +119,8 @@ public class CharacterController2D : MonoBehaviour
 			// Otherwise if the input is moving the player left and the player is facing right...
 			else if (move < 0 && m_FacingRight)
 			{
-				// ... flip the player.
-				Flip();
+                // ... flip the player.
+                Flip();
 			}
 		}
 		// If the player should jump...

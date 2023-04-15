@@ -19,12 +19,14 @@ public class Enemy : MonoBehaviour, IDamageable
     private GameObject m_Player;
 
     [SerializeField]
-    private int m_Health = 5;
+    private int _maxHealth = 5;
+    private int m_Health;
 
 
     private void Start()
     {
         m_Player = GameObject.FindGameObjectWithTag("Player");
+        m_Health = _maxHealth;
     }
 
     private void Update()
@@ -60,7 +62,6 @@ public class Enemy : MonoBehaviour, IDamageable
         if(m_Health - 1  > 0)
         {
             m_Health = m_Health - dmg;
-            Debug.Log($"Enemy Health: {m_Health}");
         }
         else
         {
