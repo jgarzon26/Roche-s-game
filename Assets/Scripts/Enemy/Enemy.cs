@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField]
     private GameObject _bulletPrefab;
@@ -17,6 +17,9 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _enemySeeRange = 20f;
     private GameObject m_Player;
+
+    [SerializeField]
+    private int m_Health = 5;
 
 
     private void Start()
@@ -50,5 +53,18 @@ public class Enemy : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _enemySeeRange);
+    }
+
+    public void OnHit(int dmg)
+    {
+        if(m_Health - 1  > 0)
+        {
+            m_Health = m_Health - dmg;
+            Debug.Log($"Enemy Health: {m_Health}");
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

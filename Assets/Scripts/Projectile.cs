@@ -15,6 +15,7 @@ public class Projectile : MonoBehaviour
 
     public Vector2 PlayerLastPosition { get; set; }
 
+
     private void Start()
     {
         Destroy(gameObject, _duration);
@@ -34,6 +35,15 @@ public class Projectile : MonoBehaviour
 
         Vector2 movement =  _projectileSpeed * Time.deltaTime * direction;
         transform.Translate(movement);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (gameObject.layer != other.transform.gameObject.layer)
+        {
+            other.GetComponent<IDamageable>().OnHit(1);
+            Destroy(gameObject);
+        }
     }
 
 }

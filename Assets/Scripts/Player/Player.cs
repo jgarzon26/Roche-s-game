@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     private CharacterController2D m_PlayerController;
 
@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _fireCooldown = 2;
     private float m_FireDelay = 0;
+
+    [SerializeField]
+    private int m_Health = 10;
 
 
     private void Awake()
@@ -73,6 +76,18 @@ public class Player : MonoBehaviour
             m_FireDelay = Time.time + _fireCooldown;
             Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
             projectile.DirectionToShoot = Direction.right;
+        }
+    }
+
+    public void OnHit(int dmg)
+    {
+        if (m_Health - 1 > 0)
+        {
+            m_Health = m_Health - dmg;
+        }
+        else
+        {
+            //Destroy(gameObject);
         }
     }
 }
