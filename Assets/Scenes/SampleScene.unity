@@ -455,9 +455,9 @@ GameObject:
   - component: {fileID: 1158695469}
   - component: {fileID: 1158695472}
   - component: {fileID: 1158695471}
-  - component: {fileID: 1158695466}
   - component: {fileID: 1158695474}
   - component: {fileID: 1158695473}
+  - component: {fileID: 1158695466}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -477,7 +477,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 118b0867c437e6b4b8e1b30807e48304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 20
+  _speed: 40
+  _gunProjectilePrefab: {fileID: 7363766511721348899, guid: 80c9a3c7e3626f94a94bb56fb3d8767d, type: 3}
+  _spawnOffset: {x: 0, y: 0, z: 0}
+  _fireCooldown: 0.5
 --- !u!212 &1158695469
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -580,10 +583,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde5ed745157bf84c8489a7d6e7ffe2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 400
+  m_JumpForce: 2500
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.178
-  m_AirControl: 0
+  m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
     m_Bits: 119
@@ -605,7 +608,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1158695464}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 319a974cf9a08184abd75a6a479f29ca, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -631,7 +634,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 1158695464}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 319a974cf9a08184abd75a6a479f29ca, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
