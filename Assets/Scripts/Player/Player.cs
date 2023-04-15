@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     private CharacterController2D m_PlayerController;
 
@@ -24,10 +24,32 @@ public class Player : MonoBehaviour
     private float _fireCooldown = 2;
     private float m_FireDelay = 0;
 
+    /*Resources*/
+    [Header("Resources")]
+    [SerializeField]
+    private int m_MaxHealth = 10;
+    private int m_Health;
+    [SerializeField]
+    private int m_MaxMana = 100;
+    private int m_Mana;
+
+
+    private void Start()
+    {
+        UIManager.Instance.SetMaxHealth(m_MaxHealth);
+        m_Health = m_MaxHealth;
+        UIManager.Instance.SetCurrentHealth(m_Health);
+
+        UIManager.Instance.SetMaxMana(m_MaxMana);
+        m_Mana = m_MaxMana;
+        UIManager.Instance.SetCurrentHealth(m_Mana);
+    }
 
     private void Awake()
     {
         m_PlayerController = GetComponent<CharacterController2D>();
+
+        
     }
 
     private void Update()
@@ -71,8 +93,21 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && Time.time > m_FireDelay)
         {
             m_FireDelay = Time.time + _fireCooldown;
-            GameObject projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity);
-            //projectile.GetComponent<Projectile>().DirectionOfPlayer = 
+            Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
+            projectile.DirectionToShoot = Direction.right;
+        }
+    }
+
+    public void OnHit(int dmg)
+    {
+        if (m_Health - 1 > 0)
+        {
+            m_Health = m_Health - dmg;
+            UIManager.Instance.SetCurrentHealth(m_Health);
+        }
+        else
+        {
+            //Destroy(gameObject);
         }
     }
 }

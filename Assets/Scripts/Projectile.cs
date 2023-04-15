@@ -11,7 +11,10 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     private float _duration = 20f;
 
-    public Direction DirectionOfPlayer { private get; set; } = Direction.right;
+    public Direction DirectionToShoot { private get; set; }
+
+    public Vector2 PlayerLastPosition { get; set; }
+
 
     private void Start()
     {
@@ -25,8 +28,22 @@ public class Projectile : MonoBehaviour
 
     private void Move()
     {
-        Vector2 direction = (DirectionOfPlayer.Equals(Direction.right)) ? Vector2.right : Vector2.left;
+        const int playerLayer = 3;
+        Vector2 direction;
+        if(gameObject.layer == playerLayer) direction = (DirectionToShoot.Equals(Direction.right)) ? Vector2.right : Vector2.left;
+        else direction = PlayerLastPosition.normalized;
+
         Vector2 movement =  _projectileSpeed * Time.deltaTime * direction;
         transform.Translate(movement);
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (gameObject.layer != other.transform.gameObject.layer)
+        {
+            other.GetComponent<IDamageable>().OnHit(1);
+            Destroy(gameObject);
+        }
+    }
+
 }
