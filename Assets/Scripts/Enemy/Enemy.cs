@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
@@ -14,11 +15,17 @@ public class Enemy : MonoBehaviour, IDamageable
     protected int _maxHealth = 5;
     protected int m_Health;
 
+    [SerializeField]
+    protected Slider healthBar;
+
 
     protected void Start()
     {
         m_Player = GameObject.FindGameObjectWithTag("Player");
         m_Health = _maxHealth;
+        healthBar.maxValue = _maxHealth;
+        m_Health = _maxHealth;
+        healthBar.value = _maxHealth;
     }
 
     protected void OnDrawGizmos()
@@ -32,6 +39,7 @@ public class Enemy : MonoBehaviour, IDamageable
         if(m_Health - 1  > 0)
         {
             m_Health -= dmg;
+            healthBar.value = m_Health;
         }
         else
         {
