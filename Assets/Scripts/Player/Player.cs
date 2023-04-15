@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     private CharacterController2D m_PlayerController;
+    private Vector2 playerMovement;
 
     private void Awake()
     {
@@ -19,5 +21,10 @@ public class Player : MonoBehaviour
     void MovePlayer()
     {
         
+    }
+
+    void OnMove(InputValue inputValue)
+    {
+        playerMovement = inputValue.Get<Vector2>();
     }
 }
