@@ -5,12 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour, IDamageable
 {
     private CharacterController2D m_PlayerController;
+    private SpriteRenderer m_PlayerRenderer;
 
     /*Movement*/
     [Header("Movement")]
     [SerializeField]
     private float _speed = 5;
-    private float m_Direction;
+    private float m_Direction = 0;
     private bool m_HasJumped = false;
     private bool m_HasCrouched = false;
 
@@ -48,8 +49,7 @@ public class Player : MonoBehaviour, IDamageable
     private void Awake()
     {
         m_PlayerController = GetComponent<CharacterController2D>();
-
-        
+        m_PlayerRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -71,7 +71,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private void ControlPlayer()
     {
-        m_Direction = Input.GetAxis("Horizontal") * _speed;
+        m_Direction = Input.GetAxisRaw("Horizontal") * _speed;
 
         if (Input.GetButtonDown("Jump"))
         {
