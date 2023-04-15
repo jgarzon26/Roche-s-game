@@ -24,13 +24,32 @@ public class Player : MonoBehaviour, IDamageable
     private float _fireCooldown = 2;
     private float m_FireDelay = 0;
 
+    /*Resources*/
+    [Header("Resources")]
     [SerializeField]
-    private int m_Health = 10;
+    private int m_MaxHealth = 10;
+    private int m_Health;
+    [SerializeField]
+    private int m_MaxMana = 100;
+    private int m_Mana;
 
+
+    private void Start()
+    {
+        UIManager.Instance.SetMaxHealth(m_MaxHealth);
+        m_Health = m_MaxHealth;
+        UIManager.Instance.SetCurrentHealth(m_Health);
+
+        UIManager.Instance.SetMaxMana(m_MaxMana);
+        m_Mana = m_MaxMana;
+        UIManager.Instance.SetCurrentHealth(m_Mana);
+    }
 
     private void Awake()
     {
         m_PlayerController = GetComponent<CharacterController2D>();
+
+        
     }
 
     private void Update()
@@ -84,6 +103,7 @@ public class Player : MonoBehaviour, IDamageable
         if (m_Health - 1 > 0)
         {
             m_Health = m_Health - dmg;
+            UIManager.Instance.SetCurrentHealth(m_Health);
         }
         else
         {
