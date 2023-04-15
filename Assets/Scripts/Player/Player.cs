@@ -1,12 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     private CharacterController2D m_PlayerController;
-    private Vector2 playerMovement;
+
+    /*Movement*/
+    [Header("Movement")]
+    [SerializeField]
+    private float _speed = 5;
+    private float m_Direction;
+    private bool m_HasJumped = false;
+    private bool m_HasCrouched = false;
+
+    /*Projectile*/
+    [Header("Projectile")]
+    [SerializeField]
+    private GameObject _gunProjectilePrefab;
+    [SerializeField]
+    private Vector3 _spawnOffset;
+    [SerializeField]
+    private float _fireCooldown = 2;
+    private float m_FireDelay = 0;
+
+    [SerializeField]
+    private int m_Health = 10;
+
 
     private void Awake()
     {
@@ -15,16 +35,59 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        ControlPlayer();
+        Shoot();
+    }
+
+    private void FixedUpdate()
+    {
         MovePlayer();
     }
 
-    void MovePlayer()
+    private void MovePlayer()
     {
-        
+        m_PlayerController.Move(m_Direction * Time.fixedDeltaTime, m_HasCrouched, m_HasJumped);
+        m_HasJumped = false;
     }
 
-    void OnMove(InputValue inputValue)
+    private void ControlPlayer()
     {
-        playerMovement = inputValue.Get<Vector2>();
+        m_Direction = Input.GetAxis("Horizontal") * _speed;
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            m_HasJumped = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            m_HasCrouched = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            m_HasCrouched = false;
+        }
+    }
+
+    private void Shoot()
+    {
+        if (Input.GetButtonDown("Fire1") && Time.time > m_FireDelay)
+        {
+            m_FireDelay = Time.time + _fireCooldown;
+            Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
+            projectile.DirectionToShoot = Direction.right;
+        }
+    }
+
+    public void OnHit(int dmg)
+    {
+        if (m_Health - 1 > 0)
+        {
+            m_Health = m_Health - dmg;
+        }
+        else
+        {
+            //Destroy(gameObject);
+        }
     }
 }
