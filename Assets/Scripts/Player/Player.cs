@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -33,6 +34,8 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField]
     private int m_MaxMana = 100;
     private int m_Mana;
+
+    public UnityEvent deathEvent;
 
 
     private void Start()
@@ -100,13 +103,21 @@ public class Player : MonoBehaviour, IDamageable
 
     public void OnHit(int dmg)
     {
-        if (m_Health - 1 > 0)
+        m_Health -= dmg;
+        UIManager.Instance.SetCurrentHealth(m_Health);
+        /*if (m_Health - 1 > 0)
         {
-            m_Health = m_Health - dmg;
+            m_Health -= dmg;
             UIManager.Instance.SetCurrentHealth(m_Health);
         }
         else
         {
+            deathEvent.Invoke();
+            Destroy(gameObject);
+        }*/
+        if (m_Health <= 0)
+        {
+            deathEvent.Invoke();
             //Destroy(gameObject);
         }
     }

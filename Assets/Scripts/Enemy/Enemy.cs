@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if(m_Health - 1  > 0)
         {
-            m_Health = m_Health - dmg;
+            m_Health -= dmg;
         }
         else
         {
