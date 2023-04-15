@@ -23,7 +23,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayExplore();
+        m_AudioSource.clip = _exploreMusic;
+        m_AudioSource.Play();
     }
 
     public void PlayExplore()
@@ -38,15 +39,11 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCombat()
     {
-        if(!GameManager.Instance.HasEnteredCombat)
+        if (m_AudioSource.clip != _combatMusic) m_AudioSource.Stop();
+        if (!m_AudioSource.isPlaying)
         {
-            if (m_AudioSource.clip != _combatMusic) m_AudioSource.Stop();
-            if (!m_AudioSource.isPlaying)
-            {
-                m_AudioSource.clip = _combatMusic;
-                m_AudioSource.Play();
-                GameManager.Instance.HasEnteredCombat = true;
-            }
+            m_AudioSource.clip = _combatMusic;
+            m_AudioSource.Play();
         }
     }
 }

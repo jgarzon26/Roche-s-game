@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour, IDamageable
     protected int m_Health;
 
 
-    protected void Start()
+    protected virtual void Start()
     {
         m_Player = GameObject.FindGameObjectWithTag("Player");
         m_Health = _maxHealth;
