@@ -71,8 +71,8 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && Time.time > m_FireDelay)
         {
             m_FireDelay = Time.time + _fireCooldown;
-            GameObject projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity);
-            //projectile.GetComponent<Projectile>().DirectionOfPlayer = 
+            Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
+            projectile.DirectionToShoot = Direction.right;
         }
     }
 }
