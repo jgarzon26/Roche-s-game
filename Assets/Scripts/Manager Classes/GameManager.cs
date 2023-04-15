@@ -14,4 +14,9 @@ public class GameManager : MonoBehaviour
     {
         m_Instance = this;
     }
+
+    private void Start()
+    {
+        
+    }
 }

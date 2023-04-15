@@ -42,3 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: background
+    uniqueID: 2242461653
+    locked: 0
+  - name: terrain
+    uniqueID: 1469954783
+    locked: 0
