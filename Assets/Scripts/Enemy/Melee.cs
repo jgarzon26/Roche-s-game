@@ -35,6 +35,8 @@ public class Melee : Enemy
         const float offsetDistance = 0.05f;
         Vector2 targetPosition = Vector2.zero;
 
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, _enemySeeRange);
+
         if(_enemySeeRange < distanceToPlayer)
         {
             AudioManager.Instance.PlayExplore();
@@ -69,11 +71,11 @@ public class Melee : Enemy
 
         if(transform.position.x > targetPosition.x)
         {
-            m_SpriteRenderer.flipX = true;
+            transform.rotation = Quaternion.Euler(0, 180, 0); 
         }
         else
         {
-            m_SpriteRenderer.flipX = false;
+            transform.rotation = Quaternion.Euler(Vector3.zero);
         }
     }
 }

@@ -94,7 +94,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             m_FireDelay = Time.time + _fireCooldown;
             Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
-            projectile.DirectionToShoot = Direction.right;
+            projectile.DirectionToShoot = (m_PlayerController.FacingRight) ? Direction.right : Direction.left;
         }
     }
 
