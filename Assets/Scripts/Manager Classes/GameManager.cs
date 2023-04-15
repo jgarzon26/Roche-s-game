@@ -8,10 +8,16 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get =>  m_Instance; }
 
-    public bool HasEnteredCombat { get; set; } = false;
+    public bool HasEnteredCombat { get; set; }
 
     private void Awake()
     {
         m_Instance = this;
+        HasEnteredCombat = false;
+    }
+
+    private void Start()
+    {
+        
     }
 }

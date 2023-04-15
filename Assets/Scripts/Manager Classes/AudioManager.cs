@@ -38,11 +38,15 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCombat()
     {
-        if(m_AudioSource.clip != _combatMusic) m_AudioSource.Stop();
-        if (!m_AudioSource.isPlaying)
+        if(!GameManager.Instance.HasEnteredCombat)
         {
-            m_AudioSource.clip = _combatMusic;
-            m_AudioSource.Play();
+            if (m_AudioSource.clip != _combatMusic) m_AudioSource.Stop();
+            if (!m_AudioSource.isPlaying)
+            {
+                m_AudioSource.clip = _combatMusic;
+                m_AudioSource.Play();
+                GameManager.Instance.HasEnteredCombat = true;
+            }
         }
     }
 }
