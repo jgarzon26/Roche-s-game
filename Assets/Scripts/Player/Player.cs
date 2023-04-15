@@ -34,17 +34,22 @@ public class Player : MonoBehaviour, IDamageable
     private int m_Mana;
 
 
-    private void Awake()
+    private void Start()
     {
-        m_PlayerController = GetComponent<CharacterController2D>();
-
-        UIManager.Instance.SetMaxHealth(m_MaxHealth);       
+        UIManager.Instance.SetMaxHealth(m_MaxHealth);
         m_Health = m_MaxHealth;
         UIManager.Instance.SetCurrentHealth(m_Health);
 
         UIManager.Instance.SetMaxMana(m_MaxMana);
         m_Mana = m_MaxMana;
         UIManager.Instance.SetCurrentHealth(m_Mana);
+    }
+
+    private void Awake()
+    {
+        m_PlayerController = GetComponent<CharacterController2D>();
+
+        
     }
 
     private void Update()
