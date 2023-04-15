@@ -5,8 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    private CharacterController2D m_PlayerController;
-    private Vector2 playerMovement;
+    [SerializeField] private CharacterController2D m_PlayerController;
+    [SerializeField] private float m_RunSpeed = 50f;
+    private float m_HorizontalMove = 0f;
+    private bool m_IsJumping = false;
 
     private void Awake()
     {
@@ -15,16 +17,17 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        MovePlayer();
-    }
-
-    void MovePlayer()
-    {
+        m_HorizontalMove = Input.GetAxisRaw("Horizontal") * m_RunSpeed;
         
+        if(Input.GetButtonDown("Jump"))
+        {
+            m_IsJumping = true;
+        }
     }
 
-    void OnMove(InputValue inputValue)
+    private void FixedUpdate()
     {
-        playerMovement = inputValue.Get<Vector2>();
+        m_PlayerController.Move(m_HorizontalMove * Time.fixedDeltaTime, false, m_IsJumping);
+        m_IsJumping=false;
     }
 }
