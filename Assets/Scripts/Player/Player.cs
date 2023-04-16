@@ -125,7 +125,8 @@ public class Player : MonoBehaviour, IDamageable
             if (m_Mana > 0)
             {
                 isCasting = true;
-                isFlying = true;               
+                isFlying = true;
+                m_PlayerAnimator.SetBool("HasFly", true);
             }
             
         }
@@ -133,6 +134,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             isCasting = false;
             isFlying = false;
+            m_PlayerAnimator.SetBool("HasFly", false);
         }
     }
 
