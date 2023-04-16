@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     public bool HasEnteredCombat { get; set; } = false;
 
+    public bool IsPlayerChargingShot { get; set; } = false;
+
     private void Awake()
     {
         m_Instance = this;

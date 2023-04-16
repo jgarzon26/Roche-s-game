@@ -7,26 +7,27 @@ public enum Direction { left, right }
 public class Projectile : MonoBehaviour
 {
     [SerializeField]
-    private float _projectileSpeed = 10f;
+    protected float _projectileSpeed = 10f;
     [SerializeField]
-    private float _duration = 20f;
+    protected float _duration = 20f;
+
 
     public Direction DirectionToShoot { private get; set; }
 
     public Vector2 PlayerLastPosition { get; set; }
 
 
-    private void Start()
+    protected virtual void Start()
     {
         Destroy(gameObject, _duration);
     }
 
-    private void Update()
+    protected void Update()
     {
         Move();
     }
 
-    private void Move()
+    protected virtual void Move()
     {
         const int playerLayer = 3;
         Vector2 direction;
@@ -37,7 +38,7 @@ public class Projectile : MonoBehaviour
         transform.Translate(movement);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (gameObject.layer != other.transform.gameObject.layer)
         {
@@ -45,5 +46,7 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
 
 }

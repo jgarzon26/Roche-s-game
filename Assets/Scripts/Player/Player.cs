@@ -33,6 +33,14 @@ public class Player : MonoBehaviour, IDamageable
     private float _fireCooldown = 2;
     private float m_FireDelay = 0;
 
+    [SerializeField]
+    private GameObject _chargedShotPrefab;
+    [SerializeField]
+    private Vector3 _spawnOffsetOfCharge;
+    [SerializeField]
+    private float _Cooldown = 20;
+    private bool m_CanChargeShot = true;
+
     /*Resources*/
     [Header("Resources")]
     [SerializeField]
@@ -70,18 +78,20 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        Debug.Log(m_Mana);
         UIManager.Instance.SetCurrentMana(m_Mana);
         if (m_Mana < m_MaxMana && !isCasting)
             m_Mana += Time.deltaTime * manaRegen;
-        ControlPlayer();
-        Shoot();
+        if(!GameManager.Instance.IsPlayerChargingShot) ControlPlayer();
+        if(!GameManager.Instance.IsPlayerChargingShot) Shoot();
     }
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        if(!m_HasCrouched && !GameManager.Instance.IsPlayerChargingShot)
+            MovePlayer();
     }
+
+    private bool HasMoved() => (m_Direction > 0 || m_Direction < 0);
 
     private void MovePlayer()
     {
@@ -89,12 +99,15 @@ public class Player : MonoBehaviour, IDamageable
         m_HasJumped = false;
         if (isFlying)
         {
-            m_Mana -= Time.deltaTime * manaCost;
+            //m_Mana -= Time.deltaTime * manaCost;
             m_PlayerController.Fly();
         }
-           
-        m_PlayerAnimator.SetBool("IsMoving", m_Direction > 0 || m_Direction < 0);
-        m_PlayerAnimator.ResetTrigger("OnShoot");
+        
+        m_PlayerAnimator.SetBool("IsMoving", HasMoved());
+        if(HasMoved() && m_PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsName("shoot_anim"))
+        {
+            m_PlayerAnimator.Play("run_anim");
+        }
     }
 
     private void ControlPlayer()
@@ -127,6 +140,7 @@ public class Player : MonoBehaviour, IDamageable
                 isCasting = true;
                 isFlying = true;
                 m_PlayerAnimator.SetBool("HasFly", true);
+                m_PlayerAnimator.SetTrigger("OnFly");
             }
             
         }
@@ -140,13 +154,36 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Shoot()
     {
-        if (Input.GetButtonDown("Fire1") && Time.time > m_FireDelay)
+        if (HasMoved() == false && isFlying == false)
         {
-            m_FireDelay = Time.time + _fireCooldown;
-            m_PlayerAnimator.SetTrigger("OnShoot");
-            Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
-            projectile.DirectionToShoot = (m_PlayerController.FacingRight) ? Direction.right : Direction.left;
+            if(Input.GetButtonDown("Fire1") && Time.time > m_FireDelay)
+            {
+                m_FireDelay = Time.time + _fireCooldown;
+                m_PlayerAnimator.SetTrigger("OnShoot");
+                Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
+                projectile.DirectionToShoot = (m_PlayerController.FacingRight) ? Direction.right : Direction.left;
+            }
+
+            if(Input.GetButtonDown("Fire2") && m_CanChargeShot)
+            {
+                m_CanChargeShot = false;
+                GameManager.Instance.IsPlayerChargingShot = true;
+                m_PlayerAnimator.SetBool("IsShootCharge", true);
+                Invoke(nameof(SpawnBall), 2);
+            }
         }
+    }
+
+    private void SpawnBall()
+    {
+        Projectile projectile = Instantiate(_chargedShotPrefab, transform.position + _spawnOffsetOfCharge, Quaternion.identity).GetComponent<Projectile>();
+        projectile.DirectionToShoot = (m_PlayerController.FacingRight) ? Direction.right : Direction.left;
+    }
+
+    public void ShootChargedShot()
+    {
+        StartCoroutine(ChargeShotCooldownRoutine());
+        m_PlayerAnimator.SetBool("IsShootCharge", false);
     }
 
     public void OnHit(int dmg)
@@ -165,8 +202,17 @@ public class Player : MonoBehaviour, IDamageable
         }*/
         if (m_Health <= 0)
         {
+            m_PlayerAnimator.SetTrigger("OnDeath");
             deathEvent.Invoke();
             //Destroy(gameObject);
         }
+    }
+
+    private IEnumerator ChargeShotCooldownRoutine()
+    {
+        yield return new WaitForSeconds(_Cooldown);
+        GameManager.Instance.IsPlayerChargingShot = false;
+        m_CanChargeShot = true;
+        m_PlayerAnimator.Play("Idle_anim");
     }
 }
