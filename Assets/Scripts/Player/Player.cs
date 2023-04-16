@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour, IDamageable
 {
     private CharacterController2D m_PlayerController;
-    private SpriteRenderer m_PlayerRenderer;
+    private Animator m_PlayerAnimator;
 
     /*Movement*/
     [Header("Movement")]
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour, IDamageable
     private void Awake()
     {
         m_PlayerController = GetComponent<CharacterController2D>();
-        m_PlayerRenderer = GetComponent<SpriteRenderer>();
+        m_PlayerAnimator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -67,24 +67,30 @@ public class Player : MonoBehaviour, IDamageable
     {
         m_PlayerController.Move(m_Direction * Time.fixedDeltaTime, m_HasCrouched, m_HasJumped);
         m_HasJumped = false;
+        m_PlayerAnimator.SetBool("IsMoving", m_Direction > 0 || m_Direction < 0);
     }
 
     private void ControlPlayer()
     {
+        
         m_Direction = Input.GetAxisRaw("Horizontal") * _speed;
 
         if (Input.GetButtonDown("Jump"))
         {
             m_HasJumped = true;
+            m_PlayerAnimator.SetTrigger("HasJumped");
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             m_HasCrouched = true;
+            m_PlayerAnimator.SetTrigger("HasCrouch");
+            m_PlayerAnimator.SetBool("HasCrouched", true);
         }
         else if (Input.GetKeyUp(KeyCode.DownArrow))
         {
             m_HasCrouched = false;
+            m_PlayerAnimator.SetBool("HasCrouched", false);
         }
     }
 
