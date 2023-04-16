@@ -70,7 +70,6 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        Debug.Log(m_Mana);
         UIManager.Instance.SetCurrentMana(m_Mana);
         if (m_Mana < m_MaxMana && !isCasting)
             m_Mana += Time.deltaTime * manaRegen;

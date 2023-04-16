@@ -4,6 +4,24 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/vid.unity
+    guid: 7c18da65cb0277942b7ad2d1636b9f76
+  - enabled: 1
+    path: Assets/Scenes/StartMenu.unity
+    guid: 02356f7d987afbe4297f18a656eb18c1
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Terrain 1.unity
+    guid: 87e68c0526bac2348bb85ae5e73d0ee2
+  - enabled: 1
+    path: Assets/Scenes/Terrain.unity
+    guid: b407e6beb414f5f4d804754bfdc27d90
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 154bb89d9a7d1c6469507f54e7d2a34d
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 3d684b63434b5c0439ffbeacc4a4468b, type: 2}
