@@ -37,6 +37,9 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        const int barrierLayer = 8;
+        Physics2D.IgnoreLayerCollision(gameObject.layer, barrierLayer);
+
         UIManager.Instance.SetMaxHealth(m_MaxHealth);
         m_Health = m_MaxHealth;
         UIManager.Instance.SetCurrentHealth(m_Health);
@@ -99,6 +102,7 @@ public class Player : MonoBehaviour, IDamageable
         if (Input.GetButtonDown("Fire1") && Time.time > m_FireDelay)
         {
             m_FireDelay = Time.time + _fireCooldown;
+            m_PlayerAnimator.SetTrigger("OnShoot");
             Projectile projectile = Instantiate(_gunProjectilePrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
             projectile.DirectionToShoot = (m_PlayerController.FacingRight) ? Direction.right : Direction.left;
         }

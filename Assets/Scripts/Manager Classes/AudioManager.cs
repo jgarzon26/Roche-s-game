@@ -8,24 +8,42 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager Instance { get => m_Instance; }
 
-    private AudioSource[] m_BGMusics;
+    [SerializeField]
+    private AudioClip _exploreMusic;
+    [SerializeField]
+    private AudioClip _combatMusic;
 
+    private AudioSource m_AudioSource;
 
     private void Awake()
     {
         m_Instance = this;
-        m_BGMusics = GetComponentsInChildren<AudioSource>();
+        m_AudioSource = GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
+        m_AudioSource.clip = _exploreMusic;
+        m_AudioSource.Play();
     }
 
     public void PlayExplore()
     {
-        m_BGMusics[1].Stop();
-        m_BGMusics[0].Play();
+        if (m_AudioSource.clip != _exploreMusic) m_AudioSource.Stop();
+        if(!m_AudioSource.isPlaying)
+        {
+            m_AudioSource.clip = _exploreMusic;
+            m_AudioSource.Play();
+        }
     }
 
     public void PlayCombat()
     {
-        m_BGMusics[0].Stop();
-        m_BGMusics[1].Play();
+        if (m_AudioSource.clip != _combatMusic) m_AudioSource.Stop();
+        if (!m_AudioSource.isPlaying)
+        {
+            m_AudioSource.clip = _combatMusic;
+            m_AudioSource.Play();
+        }
     }
 }
