@@ -35,26 +35,10 @@ public class Melee : Enemy
         const float offsetDistance = 0.05f;
         Vector2 targetPosition = Vector2.zero;
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _enemySeeRange);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _enemySeeRange, _LayerMask);
 
-        if(_enemySeeRange < distanceToPlayer)
-        {
-            AudioManager.Instance.PlayExplore();
-            if (m_CurrentWaypoint < _wayPoints.Length)
-            {
-                targetPosition = _wayPoints[m_CurrentWaypoint].position;
-                transform.position = Vector2.MoveTowards(transform.position, targetPosition, movement);
-                if(Vector2.Distance(transform.position, targetPosition) < offsetDistance)
-                {
-                    m_CurrentWaypoint++;
-                }
-            }
-            else
-            {
-                m_CurrentWaypoint = 0;
-            }
-        }
-        else
+        //_enemySeeRange < distanceToPlayer
+        if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
             targetPosition = m_Player.transform.position;
             Vector2 direction = targetPosition - (Vector2)transform.position;
@@ -67,6 +51,25 @@ public class Melee : Enemy
                 transform.position += (Vector3)move;
             }
             AudioManager.Instance.PlayCombat();
+
+            
+        }
+        else
+        {
+            AudioManager.Instance.PlayExplore();
+            if (m_CurrentWaypoint < _wayPoints.Length)
+            {
+                targetPosition = _wayPoints[m_CurrentWaypoint].position;
+                transform.position = Vector2.MoveTowards(transform.position, targetPosition, movement);
+                if (Vector2.Distance(transform.position, targetPosition) < offsetDistance)
+                {
+                    m_CurrentWaypoint++;
+                }
+            }
+            else
+            {
+                m_CurrentWaypoint = 0;
+            }
         }
 
         if(transform.position.x > targetPosition.x)

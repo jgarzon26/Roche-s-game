@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField]
     protected Slider healthBar;
 
+    [SerializeField]
+    protected LayerMask _LayerMask;
 
     protected virtual void Start()
     {
