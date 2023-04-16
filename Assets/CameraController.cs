@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float _followSpeed = 2f;
     [SerializeField]
+    private float xOffset = -10f;
+    [SerializeField]
     private float yOffset = 1f;
     [SerializeField]
     private float zOffset = -10f;
@@ -15,7 +17,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        Vector3 newPos = new(_playerTransform.position.x, _playerTransform.position.y + yOffset, zOffset);
+        Vector3 newPos = new(_playerTransform.position.x + xOffset, _playerTransform.position.y + yOffset, zOffset);
         transform.position = Vector3.Slerp(transform.position, newPos, _followSpeed * Time.deltaTime);
     }
 }

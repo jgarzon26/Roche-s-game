@@ -25,6 +25,8 @@ public class CharacterController2D : MonoBehaviour
 
 	public UnityEvent OnLandEvent;
 
+	public bool FacingRight => m_FacingRight;
+
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
 
