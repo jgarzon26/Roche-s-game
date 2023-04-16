@@ -135,7 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde5ed745157bf84c8489a7d6e7ffe2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 8000
+  m_JumpForce: 80
+  m_LiftForce: 250
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.178
   m_AirControl: 1
@@ -166,7 +167,7 @@ Rigidbody2D:
   m_Mass: 6.04
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 7
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -227,11 +228,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 40
+  canFly: 0
+  manaCost: 30
   _gunProjectilePrefab: {fileID: 7363766511721348899, guid: 80c9a3c7e3626f94a94bb56fb3d8767d, type: 3}
   _spawnOffset: {x: 0, y: 0, z: 0}
   _fireCooldown: 0.5
   m_MaxHealth: 10
   m_MaxMana: 100
+  manaRegen: 3
+  isCasting: 0
+  deathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: GameOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &1158695475
 Animator:
   serializedVersion: 4

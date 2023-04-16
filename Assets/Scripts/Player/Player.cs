@@ -92,8 +92,9 @@ public class Player : MonoBehaviour, IDamageable
             m_Mana -= Time.deltaTime * manaCost;
             m_PlayerController.Fly();
         }
-            
+           
         m_PlayerAnimator.SetBool("IsMoving", m_Direction > 0 || m_Direction < 0);
+        m_PlayerAnimator.ResetTrigger("OnShoot");
     }
 
     private void ControlPlayer()
