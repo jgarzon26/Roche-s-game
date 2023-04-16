@@ -31,12 +31,12 @@ public class UIManager : MonoBehaviour
         m_HealthSlider.value = health;
     }
 
-    public void SetMaxMana(int mana)
+    public void SetMaxMana(float mana)
     {
         m_ManaSlider.maxValue = mana;
     }
 
-    public void SetCurrentMana(int mana)
+    public void SetCurrentMana(float mana)
     {
         m_ManaSlider.value = mana;
     }

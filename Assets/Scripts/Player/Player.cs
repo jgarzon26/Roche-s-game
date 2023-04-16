@@ -16,6 +16,13 @@ public class Player : MonoBehaviour, IDamageable
     private bool m_HasJumped = false;
     private bool m_HasCrouched = false;
 
+    /*Flying*/
+    [Header("Flying")]
+    public bool canFly = false;
+    private bool isFlying = false;
+    [SerializeField]
+    private float manaCost = 30f;
+
     /*Projectile*/
     [Header("Projectile")]
     [SerializeField]
@@ -32,8 +39,11 @@ public class Player : MonoBehaviour, IDamageable
     private int m_MaxHealth = 10;
     private int m_Health;
     [SerializeField]
-    private int m_MaxMana = 100;
-    private int m_Mana;
+    private float m_MaxMana = 100;
+    private float m_Mana;
+    [SerializeField]
+    private float manaRegen = 3f;
+    public bool isCasting = false;
 
     public UnityEvent deathEvent;
 
@@ -46,7 +56,7 @@ public class Player : MonoBehaviour, IDamageable
 
         UIManager.Instance.SetMaxMana(m_MaxMana);
         m_Mana = m_MaxMana;
-        UIManager.Instance.SetCurrentHealth(m_Mana);
+        UIManager.Instance.SetCurrentMana(m_Mana);
     }
 
     private void Awake()
@@ -57,6 +67,10 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Update()
     {
+        Debug.Log(m_Mana);
+        UIManager.Instance.SetCurrentMana(m_Mana);
+        if (m_Mana < m_MaxMana && !isCasting)
+            m_Mana += Time.deltaTime * manaRegen;
         ControlPlayer();
         Shoot();
     }
@@ -70,6 +84,12 @@ public class Player : MonoBehaviour, IDamageable
     {
         m_PlayerController.Move(m_Direction * Time.fixedDeltaTime, m_HasCrouched, m_HasJumped);
         m_HasJumped = false;
+        if (isFlying)
+        {
+            m_Mana -= Time.deltaTime * manaCost;
+            m_PlayerController.Fly();
+        }
+            
     }
 
     private void ControlPlayer()
@@ -88,6 +108,21 @@ public class Player : MonoBehaviour, IDamageable
         else if (Input.GetKeyUp(KeyCode.DownArrow))
         {
             m_HasCrouched = false;
+        }
+
+        if (Input.GetButtonDown("Fly") && canFly)
+        {
+            if (m_Mana > 0)
+            {
+                isCasting = true;
+                isFlying = true;               
+            }
+            
+        }
+        else if (Input.GetButtonUp("Fly") || m_Mana <= 0f)
+        {
+            isCasting = false;
+            isFlying = false;
         }
     }
 
