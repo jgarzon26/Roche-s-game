@@ -23,8 +23,8 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField]
     private float manaCost = 30f;
 
-    /*Projectile*/
-    [Header("Projectile")]
+    /*Basic Shot*/
+    [Header("Basic Shot")]
     [SerializeField]
     private GameObject _gunProjectilePrefab;
     [SerializeField]
@@ -33,6 +33,8 @@ public class Player : MonoBehaviour, IDamageable
     private float _fireCooldown = 2;
     private float m_FireDelay = 0;
 
+    /*Charged Shot*/
+    [Header("Charged Shot")]
     [SerializeField]
     private GameObject _chargedShotPrefab;
     [SerializeField]
@@ -40,6 +42,8 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField]
     private float _Cooldown = 20;
     private bool m_CanChargeShot = true;
+    [SerializeField]
+    private float chargeShotManaCost = 30f;
 
     /*Resources*/
     [Header("Resources")]
@@ -99,7 +103,7 @@ public class Player : MonoBehaviour, IDamageable
         m_HasJumped = false;
         if (isFlying)
         {
-            //m_Mana -= Time.deltaTime * manaCost;
+            m_Mana -= Time.deltaTime * manaCost;
             m_PlayerController.Fly();
         }
         
@@ -164,12 +168,13 @@ public class Player : MonoBehaviour, IDamageable
                 projectile.DirectionToShoot = (m_PlayerController.FacingRight) ? Direction.right : Direction.left;
             }
 
-            if(Input.GetButtonDown("Fire2") && m_CanChargeShot)
+            if(Input.GetButtonDown("Fire2") && m_CanChargeShot && m_Mana >= chargeShotManaCost)
             {
                 m_CanChargeShot = false;
                 GameManager.Instance.IsPlayerChargingShot = true;
                 m_PlayerAnimator.SetBool("IsShootCharge", true);
                 Invoke(nameof(SpawnBall), 2);
+                m_Mana -= chargeShotManaCost;
             }
         }
     }
@@ -178,12 +183,13 @@ public class Player : MonoBehaviour, IDamageable
     {
         Projectile projectile = Instantiate(_chargedShotPrefab, transform.position + _spawnOffsetOfCharge, Quaternion.identity).GetComponent<Projectile>();
         projectile.DirectionToShoot = (m_PlayerController.FacingRight) ? Direction.right : Direction.left;
+        m_PlayerAnimator.SetBool("IsShootCharge", false);
     }
 
     public void ShootChargedShot()
     {
         StartCoroutine(ChargeShotCooldownRoutine());
-        m_PlayerAnimator.SetBool("IsShootCharge", false);
+        
     }
 
     public void OnHit(int dmg)
