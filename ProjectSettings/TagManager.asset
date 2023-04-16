@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - ChargeShot
+  - parts
+  - traps
   layers:
   - Default
   - TransparentFX

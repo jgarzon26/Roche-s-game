@@ -4,21 +4,14 @@ using UnityEngine;
 
 public class pickup : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   private int parts = 0;
+    
     private void OnTriggerEnter2D(Collider2D other){
         if(other.gameObject.CompareTag("parts"))
         {
             Destroy(other.gameObject);
+            parts++;
+            Debug.Log("Parts Collected: " + parts);
         }
     }
 }

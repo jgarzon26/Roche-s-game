@@ -40,7 +40,7 @@ public class Melee : Enemy
         //_enemySeeRange < distanceToPlayer
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
-            targetPosition = m_Player.transform.position;
+            targetPosition = new Vector3(m_Player.transform.position.x, transform.position.y, 0);
             Vector2 direction = targetPosition - (Vector2)transform.position;
             float distance = Vector2.Distance(transform.position, targetPosition);
             const float offsetDistanceToPlayer = 4f;

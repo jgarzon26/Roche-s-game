@@ -99,7 +99,7 @@ public class Player : MonoBehaviour, IDamageable
         m_HasJumped = false;
         if (isFlying)
         {
-            //m_Mana -= Time.deltaTime * manaCost;
+            m_Mana -= Time.deltaTime * manaCost;
             m_PlayerController.Fly();
         }
         
