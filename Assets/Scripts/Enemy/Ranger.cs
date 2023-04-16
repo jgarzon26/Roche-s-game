@@ -29,7 +29,6 @@ public class Ranger : Enemy
         }
         else if (_enemySeeRange < distanceToPlayer)
         {
-            GameManager.Instance.HasEnteredCombat = false;
             AudioManager.Instance.PlayExplore();
         }
 
