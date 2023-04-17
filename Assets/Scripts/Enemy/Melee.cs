@@ -30,6 +30,7 @@ public class Melee : Enemy
 
     private void Move()
     {
+        
         float distanceToPlayer = Vector2.Distance(transform.position, m_Player.transform.position);
         float movement = _speed * Time.deltaTime;
         const float offsetDistance = 0.05f;
@@ -49,14 +50,15 @@ public class Melee : Enemy
             {
                 Vector2 move = direction.normalized * Mathf.Min(distance - offsetDistanceToPlayer, movement);
                 transform.position += (Vector3)move;
+                AudioManager.Instance.PlayCombat();
             }
-            AudioManager.Instance.PlayCombat();
+            
 
             
         }
         else
         {
-            AudioManager.Instance.PlayExplore();
+           // AudioManager.Instance.PlayExplore();
             if (m_CurrentWaypoint < _wayPoints.Length)
             {
                 targetPosition = _wayPoints[m_CurrentWaypoint].position;

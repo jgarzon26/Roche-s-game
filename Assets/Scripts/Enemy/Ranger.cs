@@ -25,12 +25,12 @@ public class Ranger : Enemy
             m_FireDelay = Time.time + _fireCooldown;
             Projectile projectile = Instantiate(_bulletPrefab, transform.position + _spawnOffset, Quaternion.identity).GetComponent<Projectile>();
             projectile.PlayerLastPosition = m_Player.transform.position - transform.position;
-            AudioManager.Instance.PlayCombat();
+            //AudioManager.Instance.PlayCombat();
         }
-        else if (_enemySeeRange < distanceToPlayer)
-        {
-            AudioManager.Instance.PlayExplore();
-        }
+        // else if (_enemySeeRange < distanceToPlayer)
+        // {
+        //     AudioManager.Instance.PlayExplore();
+        // }
 
     }
 }
