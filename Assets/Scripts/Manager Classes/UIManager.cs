@@ -48,4 +48,11 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void Back()
+    {
+        SceneManager.LoadScene("StartMenu");
+    }
+
+    
 }
